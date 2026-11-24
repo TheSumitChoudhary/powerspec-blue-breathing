@@ -1,4 +1,10 @@
-# PowerSpec G478 Blue Breathing on Linux
+# PowerSpec G478 RGB on Linux · Blue Breathing
+
+![Blue Breathing concept art with a Samsung Mini LED display showing a blue eclipse, blue LANCOOL 206 fan rings, and a translucent Redragon keyboard](blue-breathing-cover.jpg)
+
+*Concept art inspired by the setup, with a 43-inch Samsung Mini LED display.*
+
+[Quick start](#quick-start) · [Troubleshooting](#troubleshooting) · [How I used Codex](#how-i-used-codex)
 
 I wanted slow blue breathing across my setup, with no green and no Windows boot. This is what worked on my PowerSpec G478. The front fans and Zotac GPU are confirmed. The motherboard, keyboard, and mouse have the limits below.
 
@@ -19,9 +25,24 @@ The apply command exits with status 1 if either controller fails to report the r
 | PowerSpec / LANCOOL 206 front fans | Tap **M** until the whole blue ring dims and brightens together. A moving pattern that travels inward or outward is a different preset. Tap **C** to cycle to blue. If the rings are linked, use the inner pair. Otherwise use each ring's own pair. |
 | MSI MPG Z790 EDGE WIFI | Rainbow Wave brought the lights back. OpenRGB continued to report Rainbow Wave after a blue Breathing command, so blue breathing on this board is unverified. If a change makes the board go dark, the recovery that worked here was selecting that board in OpenRGB and applying **Rainbow wave** without brightness or speed flags. Use `openrgb --list-devices` to get the current device number first. |
 | Redragon ELF PRO K649 | Connect the USB cable and move the side switch to **OFF** for wired mode. The official K649 app opened under Wine. I confirmed solid blue using **Fixed_on**, the dark-blue square, and Save. For blue breathing, choose **Respire**, select dark blue, clear **Colourful**, and save. Check the physical keys while idle. Blue breathing was not independently verified. |
+| 43-inch Samsung Mini LED display | The display is part of the setup and the artwork. Its settings are outside the scope of the RGB script. |
 | SteelSeries Aerox 3 Wireless | OpenRGB exposed **Rainbow Breathing**, which includes green. The script leaves the mouse alone. |
 
 [PowerSpec case button guide](https://community.microcenter.com/discussion/14124/powerspec-atx-206-chassis) · [Redragon K649 software](https://redragonshop.com/pages/software)
+
+## Troubleshooting
+
+### How do I set PowerSpec G478 front fans to blue breathing?
+
+On the LANCOOL 206 front panel, tap **M** until both fan rings dim and brighten as a whole. Then tap **C** to cycle to blue. The two **M/C** pairs control the inner and outer rings separately unless they are linked. Hold both **M** buttons for about three seconds to toggle ring linking. When linked, use the inner pair.
+
+### Why is my Zotac RTX 4080 SUPER RGB off on Linux?
+
+If OpenRGB doesn't list the Zotac card, run `spectractl status`. For the Trinity Black card tested here, the controller reported `power: off`. Running `spectractl on` restored the light. Running `spectractl mode breathe 0000FF 100` then set blue breathing.
+
+### Why is my Redragon ELF PRO K649 preview blue but the keys still react to typing?
+
+Check the physical keyboard while idle. Use **Fixed_on** to test solid blue before switching to **Respire**. Select the dark-blue square under the color wheel and click Save. Connect the cable and set the side switch to **OFF** to use wired mode with the Redragon app.
 
 ## How I used Codex
 
