@@ -32,17 +32,43 @@ The apply command exits with status 1 if either controller fails to report the r
 
 ## Troubleshooting
 
+This guide is for a **PowerSpec G478 running Linux**. The goal is blue breathing: the LEDs stay blue and smoothly dim and brighten together. The LANCOOL 206 front fans, Zotac GPU, MSI motherboard, and Redragon keyboard each have their own lighting controller. Pick the section for the part you want to fix.
+
 ### How do I set PowerSpec G478 front fans to blue breathing?
 
-On the LANCOOL 206 front panel, tap **M** until both fan rings dim and brighten as a whole. Then tap **C** to cycle to blue. The two **M/C** pairs control the inner and outer rings separately unless they are linked. Hold both **M** buttons for about three seconds to toggle ring linking. When linked, use the inner pair.
+The LANCOOL 206 case has two **M** buttons for lighting effects and two **C** buttons for colors. One pair controls the inner fan lights and the other controls the outer rings.
+
+1. Tap **M** once at a time. Wait long enough to see whether the whole ring dims and brightens together. If the light travels inward or outward, keep cycling.
+2. Tap **C** to select blue. If one pair changes both rings, use that pair. If the rings respond separately, repeat on the other pair.
+
+This uses the case buttons and works without a Linux app. [PowerSpec case button guide](https://community.microcenter.com/discussion/14124/powerspec-atx-206-chassis)
 
 ### Why is my Zotac RTX 4080 SUPER RGB off on Linux?
 
-If OpenRGB doesn't list the Zotac card, run `spectractl status`. For the Trinity Black card tested here, the controller reported `power: off`. Running `spectractl on` restored the light. Running `spectractl mode breathe 0000FF 100` then set blue breathing.
+On the **Zotac RTX 4080 SUPER Trinity Black** tested here, OpenRGB didn't list the card and its LEDs were dark. [SpectraCtrl](https://github.com/Doodcom/SpectraCtrl) could reach the GPU's lighting controller. Install it using the upstream instructions, then run:
 
-### Why is my Redragon ELF PRO K649 preview blue but the keys still react to typing?
+```sh
+spectractl status
+spectractl on                       # if status shows power: off
+spectractl mode breathe 0000FF 100
+spectractl status
+```
 
-Check the physical keyboard while idle. Use **Fixed_on** to test solid blue before switching to **Respire**. Select the dark-blue square under the color wheel and click Save. Connect the cable and set the side switch to **OFF** to use wired mode with the Redragon app.
+On this setup the final status showed **on**, **breathe**, and **#0000FF**. If the first command can't identify your lighting controller, check the model and support in SpectraCtrl before sending changes.
+
+### What if the MSI motherboard lights go dark or stay on Rainbow Wave?
+
+Run `openrgb --list-devices` and find the current number for **MSI MPG Z790 EDGE WIFI (MS-7D91)**. To recover the previously working effect, run `openrgb --device NUMBER --mode 'Rainbow wave'`, replacing `NUMBER` with that device number. This restored visible lighting on the tested board. Rainbow Wave includes green, and blue breathing on this board is still unverified.
+
+### Why is my Redragon ELF PRO K649 preview blue but the keys only light when I type?
+
+The physical keyboard is still running a reactive effect. Connect it with a USB data cable and slide the side switch to **OFF** for wired mode. Open the [Redragon K649 app](https://redragonshop.com/pages/software), which launched under Wine on this setup.
+
+1. Click the **lightbulb icon**, select **Fixed_on**, then click the dark-blue square below the color wheel.
+2. Click the **floppy-disk icon** to save. Look at the keyboard while idle. The physical keys should stay blue.
+3. To try breathing, select **Respire**, choose dark blue again, clear **Colourful**, and save. Watch the physical keys while idle to check that they fade together.
+
+Solid blue was confirmed on the keyboard here. Blue breathing was not independently verified.
 
 ## How I used Codex
 
